@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1 S4 – Responsabilità del Datore di Lavoro</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#b71c1c,#c62828,#d32f2f);min-height:100vh;overflow:hidden;display:flex;justify-content:center;align-items:center}
+.container{background:#fff;width:800px;height:550px;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.header{background:linear-gradient(135deg,#7f0000,#b71c1c);color:#fff;padding:11px 18px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.header h1{font-size:15px;font-weight:700}.header p{font-size:11px;opacity:.8;margin-top:1px}
+button{padding:7px 13px;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s}
+.btn-white{background:#fff;color:#7f0000}.btn-white:hover{background:#ffebee}
+.btn-outline{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4)}.btn-outline:hover{background:rgba(255,255,255,.25)}
+.btn-group{display:flex;gap:8px}
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.hidden{display:none!important}
+
+.instr{padding:18px 24px;overflow-y:auto;flex:1}
+.instr h2{color:#7f0000;font-size:16px;margin-bottom:10px}
+.instr p,.instr li{font-size:13px;line-height:1.6;color:#444;margin-bottom:5px}
+.instr ul{margin-left:18px;margin-bottom:10px}
+.type-row{display:flex;gap:8px;margin:10px 0}
+.type-badge{flex:1;border-radius:7px;padding:8px 10px;font-size:12px;font-weight:700;text-align:center;line-height:1.4}
+.badge-civil{background:#e3f2fd;border:2px solid #1565c0;color:#0d47a1}
+.badge-penal{background:#ffebee;border:2px solid #c62828;color:#7f0000}
+.badge-admin{background:#fff8e1;border:2px solid #f9a825;color:#e65100}
+.start-btn{background:linear-gradient(135deg,#7f0000,#b71c1c);color:#fff;padding:11px 32px;font-size:14px;border-radius:8px;display:block;margin:14px auto 0}
+.start-btn:hover{transform:translateY(-2px)}
+
+.game-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:10px 14px;gap:8px}
+.score-row{display:flex;gap:10px;align-items:center;flex-shrink:0;font-size:12px;color:#555}
+.score-row b{color:#7f0000;font-size:13px}
+.game-body{flex:1;display:flex;gap:10px;overflow:hidden;min-height:0}
+.items-col{width:195px;display:flex;flex-direction:column;flex-shrink:0}
+.items-col h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#555;margin-bottom:7px;flex-shrink:0}
+.items-container{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+.drag-item{background:#fff;border:2px solid #b71c1c;border-radius:7px;padding:9px 10px;cursor:grab;font-size:11px;font-weight:600;color:#333;line-height:1.3;transition:all .2s;user-select:none}
+.drag-item:hover{transform:translateX(3px);box-shadow:0 3px 10px rgba(0,0,0,.15)}
+.drag-item.placed{opacity:.3;pointer-events:none}
+.cats-col{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.cat-row{flex:1;display:flex;gap:8px;min-height:0}
+.cat-label{width:82px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;text-align:center;padding:6px;flex-shrink:0;line-height:1.3}
+.label-civil{background:#1565c0;color:#fff}
+.label-penal{background:#b71c1c;color:#fff}
+.label-admin{background:#f9a825;color:#333}
+.drop-zone{flex:1;border:2.5px dashed #ccc;border-radius:8px;padding:6px;display:flex;flex-direction:column;min-height:0;overflow-y:auto;gap:4px;transition:all .25s}
+.drop-zone.over{border-color:#555;background:#f5f5f5;transform:scale(1.01)}
+.dropped{background:#fff;border-radius:5px;padding:5px 22px 5px 7px;font-size:10px;font-weight:600;position:relative;animation:popIn .25s ease;line-height:1.3;border:1.5px solid #ccc;color:#333}
+.dropped.correct{border-color:#43a047;color:#1b5e20;background:#e8f5e9}
+.dropped.wrong{border-color:#e53935;color:#b71c1c;background:#ffebee}
+.rm-btn{position:absolute;top:3px;right:3px;background:#9e9e9e;color:#fff;border:none;border-radius:50%;width:15px;height:15px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+@keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.check-btn{align-self:center;background:linear-gradient(135deg,#7f0000,#b71c1c);color:#fff;padding:9px 22px;font-size:13px;border-radius:8px;flex-shrink:0}
+.check-btn:disabled{background:#ccc;cursor:not-allowed}
+
+.fb-page{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
+.fb-box{text-align:center;max-width:500px}
+.fb-icon{font-size:55px;margin-bottom:12px}
+.fb-box h2{font-size:22px;font-weight:700;color:#7f0000;margin-bottom:8px}
+.fb-box p{font-size:13px;color:#555;line-height:1.6;margin-bottom:15px}
+.score-disp{background:#ffebee;border-radius:10px;padding:12px 20px;font-size:18px;font-weight:700;color:#b71c1c;margin-bottom:15px;display:inline-block}
+.fb-btns{display:flex;gap:10px;justify-content:center}
+.btn-prim{background:linear-gradient(135deg,#7f0000,#b71c1c);color:#fff;padding:10px 24px;font-size:13px;border-radius:8px}
+.btn-sec{background:#78909c;color:#fff;padding:10px 24px;font-size:13px;border-radius:8px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div>
+      <h1>Classifica la Responsabilità del Datore di Lavoro</h1>
+      <p>Modulo 1 · Sezione 4 – Responsabilità Civile, Penale e Amministrativa</p>
+    </div>
+    <div class="btn-group">
+      <button class="btn-outline" onclick="resetGame()">🔄 Ricomincia</button>
+      <button class="btn-white" onclick="window.close()">✕ Torna al Corso</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div id="instrPage" class="instr">
+      <h2>🎯 Obiettivo</h2>
+      <p>In caso di infortunio o violazione delle norme di sicurezza, il Datore di Lavoro può incorrere in tre tipi di responsabilità che possono cumularsi. Trascina ogni <strong>conseguenza giuridica</strong> nella categoria corretta.</p>
+      <div class="type-row">
+        <div class="type-badge badge-civil">Responsabilità Civile<br><span style="font-weight:400;font-size:11px">Risarcimento del danno</span></div>
+        <div class="type-badge badge-penal">Responsabilità Penale<br><span style="font-weight:400;font-size:11px">Sanzioni personali</span></div>
+        <div class="type-badge badge-admin">Responsabilità Amministrativa<br><span style="font-weight:400;font-size:11px">Sanzioni economiche</span></div>
+      </div>
+      <ul>
+        <li>Trascina ogni elemento nella categoria corretta (3 elementi per categoria)</li>
+        <li>Puoi rimuovere un elemento cliccando il pulsante × sulla card</li>
+        <li>Quando hai posizionato tutti i 9 elementi clicca <strong>Verifica</strong></li>
+      </ul>
+      <button class="start-btn" onclick="startGame()">▶ Inizia il Gioco</button>
+    </div>
+
+    <div id="gamePage" class="game-wrap hidden">
+      <div class="score-row">
+        Elementi posizionati: <b><span id="placedCount">0</span>/9</b>
+        <button class="check-btn" id="checkBtn" onclick="checkAnswers()" disabled style="margin-left:auto">Verifica</button>
+      </div>
+      <div class="game-body">
+        <div class="items-col">
+          <h3>Conseguenze giuridiche</h3>
+          <div class="items-container" id="itemsContainer"></div>
+        </div>
+        <div class="cats-col">
+          <div class="cat-row">
+            <div class="cat-label label-civil">Responsabilità Civile</div>
+            <div class="drop-zone" data-cat="civil" id="zone-civil" ondragover="onOver(event)" ondrop="onDrop(event)" ondragleave="onLeave(event)"></div>
+          </div>
+          <div class="cat-row">
+            <div class="cat-label label-penal">Responsabilità Penale</div>
+            <div class="drop-zone" data-cat="penal" id="zone-penal" ondragover="onOver(event)" ondrop="onDrop(event)" ondragleave="onLeave(event)"></div>
+          </div>
+          <div class="cat-row">
+            <div class="cat-label label-admin">Responsabilità Amministrativa</div>
+            <div class="drop-zone" data-cat="admin" id="zone-admin" ondragover="onOver(event)" ondrop="onDrop(event)" ondragleave="onLeave(event)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="fbPage" class="fb-page hidden">
+      <div class="fb-box">
+        <div class="fb-icon">🏛️</div>
+        <h2>Analisi Completata!</h2>
+        <p>Le tre forme di responsabilità possono <strong>cumularsi</strong> e procedere in parallelo. La condanna penale non esclude il risarcimento civile né le sanzioni amministrative.</p>
+        <div class="score-disp" id="fbScore">–</div>
+        <div class="fb-btns">
+          <button class="btn-prim" onclick="resetGame()">🔄 Rigioca</button>
+          <button class="btn-sec" onclick="window.close()">Torna al Corso</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const items=[
+  {id:1, text:"Risarcimento del danno biologico subito dal lavoratore infortunato", cat:"civil"},
+  {id:2, text:"Azione di regresso dell'INAIL contro il datore di lavoro per infortuni gravi", cat:"civil"},
+  {id:3, text:"Risarcimento per danno da perdita di capacità lavorativa e danno morale", cat:"civil"},
+  {id:4, text:"Procedimento per lesioni colpose con violazione delle norme antinfortunistiche", cat:"penal"},
+  {id:5, text:"Procedimento per omicidio colposo in caso di infortunio mortale sul lavoro", cat:"penal"},
+  {id:6, text:"Misura cautelare di sospensione dall'esercizio di attività imprenditoriale", cat:"penal"},
+  {id:7, text:"Sanzione pecuniaria per omessa redazione del Documento di Valutazione dei Rischi", cat:"admin"},
+  {id:8, text:"Illecito amministrativo a carico dell'ente ai sensi del D.Lgs. 231/2001", cat:"admin"},
+  {id:9, text:"Provvedimento di sospensione dell'attività imprenditoriale per lavoro irregolare", cat:"admin"},
+];
+
+let placed={};
+let draggedId=null;
+
+function startGame(){
+  placed={};
+  document.getElementById('itemsContainer').innerHTML='';
+  ['civil','penal','admin'].forEach(c=>document.getElementById('zone-'+c).innerHTML='');
+  document.getElementById('placedCount').textContent='0';
+  document.getElementById('checkBtn').disabled=true;
+  [...items].sort(()=>Math.random()-.5).forEach(item=>{
+    const d=document.createElement('div');
+    d.className='drag-item'; d.id='item_'+item.id;
+    d.textContent=item.text; d.draggable=true;
+    d.ondragstart=e=>{draggedId=item.id;e.dataTransfer.effectAllowed='move';};
+    document.getElementById('itemsContainer').appendChild(d);
+  });
+  showPage('gamePage');
+}
+
+function onOver(e){e.preventDefault();e.currentTarget.classList.add('over');}
+function onLeave(e){e.currentTarget.classList.remove('over');}
+function onDrop(e){
+  e.preventDefault(); e.currentTarget.classList.remove('over');
+  if(draggedId==null) return;
+  if(placed[draggedId]!==undefined) return;
+  const cat=e.currentTarget.dataset.cat;
+  const item=items.find(i=>i.id===draggedId);
+  placed[draggedId]=cat;
+  document.getElementById('item_'+draggedId).classList.add('placed');
+  addDropped(e.currentTarget, draggedId, item.text);
+  updateCount(); draggedId=null;
+}
+function addDropped(zone, id, text){
+  const d=document.createElement('div');
+  d.className='dropped'; d.id='dropped_'+id; d.textContent=text;
+  const rm=document.createElement('button');
+  rm.className='rm-btn'; rm.textContent='×';
+  rm.onclick=()=>removeItem(id);
+  d.appendChild(rm); zone.appendChild(d);
+}
+function removeItem(id){
+  delete placed[id];
+  document.getElementById('item_'+id)?.classList.remove('placed');
+  document.getElementById('dropped_'+id)?.remove();
+  updateCount();
+}
+function updateCount(){
+  const n=Object.keys(placed).length;
+  document.getElementById('placedCount').textContent=n;
+  document.getElementById('checkBtn').disabled=n<items.length;
+}
+function checkAnswers(){
+  let correct=0;
+  items.forEach(item=>{
+    const el=document.getElementById('dropped_'+item.id);
+    if(!el) return;
+    const isRight=placed[item.id]===item.cat;
+    el.classList.add(isRight?'correct':'wrong');
+    if(isRight) correct++;
+  });
+  document.getElementById('checkBtn').disabled=true;
+  setTimeout(()=>{
+    document.getElementById('fbScore').textContent='Corretti: '+correct+'/'+items.length;
+    showPage('fbPage');
+  },1500);
+}
+function resetGame(){showPage('instrPage');}
+function showPage(id){['instrPage','gamePage','fbPage'].forEach(p=>document.getElementById(p).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+</script>
+</body>
+</html>
